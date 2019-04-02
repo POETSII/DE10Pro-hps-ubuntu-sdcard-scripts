@@ -36,6 +36,7 @@
 FPGA_DIR=$1
 FPGA_PROJECT=$2
 QSYS=$3
+PAYLOAD=$4
 FPGA_HANDOFF_DIR=hps_isw_handoff
 FPGA_BITFILE_RBF=$FPGA_DIR/output_files/$FPGA_PROJECT.rbf
 SD_IMAGE=sdimage.img
@@ -50,8 +51,14 @@ SCRIPT_PATH=$(dirname "$SCRIPT_NAME")
 
 function ubuntu() {
 	$SCRIPT_PATH/fetch_ubuntu.sh
+	$SCRIPT_PATH/configure_system.sh mnt/2/
 	$SCRIPT_PATH/configure_networking.sh mnt/2/
+	if [ -n "$PAYLOAD" ] ; then
+		echo "Copying extra files into tree"
+		cp -av $PAYLOAD/* mnt/2/
+	fi
 }
+
 
 function kernel() {
 	$SCRIPT_PATH/build_linux.sh

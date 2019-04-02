@@ -19,7 +19,7 @@ process.
 
 ## Usage
 
-./build_ubuntu_sdcard.sh \<path to FPGA project directory\> \<name of Quartus project\> \<name of Qsys project>
+./build_ubuntu_sdcard.sh \<path to FPGA project directory\> \<name of Quartus project\> \<name of Qsys project> \<folder with extra files to add to tree>
 
 ## Author
 
