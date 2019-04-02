@@ -34,11 +34,9 @@
 
 INSTALL=$1
 
-# reduce the wait time for an IP address from 5 min to 10 sec
-DHCPCFG=$INSTALL/etc/dhcp/dhclient.conf
-sudo sed -i "s/timeout 300;/timeout 10;/g" $DHCPCFG
-
-# enable IPv6 and Google public DNS
-V6CFG=$INSTALL/etc/network/interfaces.d/60-ipv6dns.cfg
-echo "iface eth0 inet6 auto" | sudo tee -a $V6CFG
-echo "        dns-nameservers 2001:4860:4860::8888 2001:4860:4860::8844" | sudo tee -a $V6CFG
+# set fstab to reflect actual hardware
+# (since image builder script can't set disc labels itself)
+FSTAB=$INSTALL/etc/fstab
+sudo sed -i "s%LABEL=cloudimg-rootfs%/dev/mmcblk0p2%g" $FSTAB
+sudo sed -i "s%LABEL=system-boot%/dev/mmcblk0p1%g" $FSTAB
+sudo sed -i "s%/firmware%%g" $FSTAB
