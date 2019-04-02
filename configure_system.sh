@@ -41,7 +41,12 @@ sudo sed -i "s%LABEL=cloudimg-rootfs%/dev/mmcblk0p2%g" $FSTAB
 sudo sed -i "s%LABEL=system-boot%/dev/mmcblk0p1%g" $FSTAB
 sudo sed -i "s%/firmware%%g" $FSTAB
 
+# add a helpful message so user knows how to login on the terminal
 ISSUE=$INSTALL/etc/issue
 echo "First login username 'ubuntu', password 'ubuntu', sudo available" | sudo tee -a $ISSUE
 echo "" | sudo tee -a $ISSUE
 
+# change the hostname to something more descriptive
+echo "arria10" | sudo tee $INSTALL/etc/hostname
+# prevent sudo from complaining
+echo "127.0.1.1    arria10" | sudo tee -a $INSTALL/etc/hosts
