@@ -40,3 +40,8 @@ FSTAB=$INSTALL/etc/fstab
 sudo sed -i "s%LABEL=cloudimg-rootfs%/dev/mmcblk0p2%g" $FSTAB
 sudo sed -i "s%LABEL=system-boot%/dev/mmcblk0p1%g" $FSTAB
 sudo sed -i "s%/firmware%%g" $FSTAB
+
+ISSUE=$INSTALL/etc/issue
+echo "First login username 'ubuntu', password 'ubuntu', sudo available" | sudo tee -a $ISSUE
+echo "" | sudo tee -a $ISSUE
+
