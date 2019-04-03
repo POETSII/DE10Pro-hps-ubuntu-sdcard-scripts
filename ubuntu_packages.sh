@@ -37,10 +37,10 @@ shift
 PACKAGES="$@"
 
 # make sure we have a qemu binary
-sudo apt-get install -y qemu-user-static
+sudo apt-get install -y qemu-user-static qemu-user-binfmt
 
 # put it inside the chroot
-sudo cp /usr/bin/qemu-arm-static $INSTALL/tmp/qemu-arm-static
+sudo cp /usr/bin/qemu-arm-static $INSTALL/usr/bin/qemu-arm-static
 
 # ensure DNS is functional
 sudo mkdir -p $INSTALL/run/resolvconf
