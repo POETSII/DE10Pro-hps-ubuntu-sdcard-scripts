@@ -40,8 +40,8 @@ PAYLOAD=$4
 FPGA_HANDOFF_DIR=hps_isw_handoff
 FPGA_BITFILE_RBF=$FPGA_DIR/output_files/$FPGA_PROJECT.rbf
 SD_IMAGE=sdimage.img
-ROOT_SIZE_MB=1500
-SD_SIZE_MB=2048
+ROOT_SIZE_MIB=3270
+SD_SIZE_MIB=3810
 echo $SCRIPT_PATH
 shift
 shift
@@ -92,9 +92,9 @@ function sdimage() {
 	echo "Building SD card image"
 	sudo $SCRIPT_PATH/make_sdimage.py -f	\
 		-P uboot_w_dtb-mkpimage.bin,num=3,format=raw,size=10M,type=A2 \
-		-P mnt/2/*,num=2,format=ext3,size=${ROOT_SIZE_MB}M \
+		-P mnt/2/*,num=2,format=ext3,size=${ROOT_SIZE_MIB}M \
 		-P zImage,socfpga.rbf,socfpga_arria10_socdk_sdmmc.dtb,num=1,format=vfat,size=500M \
-		-s ${SD_SIZE_MB}M \
+		-s ${SD_SIZE_MIB}M \
 		-n $SD_IMAGE
 
 }
