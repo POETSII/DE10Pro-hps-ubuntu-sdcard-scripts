@@ -46,8 +46,10 @@ sudo cp /usr/bin/qemu-arm-static $INSTALL/usr/bin/qemu-arm-static
 sudo mkdir -p $INSTALL/run/resolvconf
 echo "nameserver 8.8.8.8" | sudo tee $INSTALL/run/resolvconf/resolv.conf
 
-sudo chroot $INSTALL /tmp/qemu-arm-static /usr/bin/apt-get -y update
-#sudo chroot $INSTALL /tmp/qemu-arm-static /usr/bin/apt-get -y upgrade
-sudo chroot $INSTALL /tmp/qemu-arm-static /usr/bin/apt-get -y install $PACKAGES
+sudo chroot $INSTALL /usr/bin/qemu-arm-static /usr/bin/apt-get -y update
+# apt-get upgrade doesn't work so well via qemu emulation
+#sudo chroot $INSTALL /usr/bin/qemu-arm-static /usr/bin/apt-get -y upgrade
+sudo chroot $INSTALL /usr/bin/qemu-arm-static /usr/bin/apt-get -y install $PACKAGES
 
+sudo rm $INSTALL/usr/bin/qemu-arm-static
 sudo rm $INSTALL/run/resolvconf/resolv.conf
