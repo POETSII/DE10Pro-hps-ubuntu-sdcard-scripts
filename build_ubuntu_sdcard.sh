@@ -90,6 +90,7 @@ function bitfile() {
 function sdimage() {
 
 	echo "Building SD card image"
+	sudo rm -f $SD_IMAGE
 	sudo $SCRIPT_PATH/make_sdimage.py -f	\
 		-P uboot_w_dtb-mkpimage.bin,num=3,format=raw,size=10M,type=A2 \
 		-P mnt/2/*,num=2,format=ext3,size=${ROOT_SIZE_MIB}M \
