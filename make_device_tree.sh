@@ -46,7 +46,7 @@ sopc2dts --input $SOPCINFO --output $DTS  --board hps_a10_common_board_info.xml 
 	--board ghrd_10as066n2_board_info.xml \
 	--bridge-removal all --clocks
 echo "...adding .dtsi fragments" *.dtsi
-cat *.dtsi >> $DTS
+cat *.dtsi >> $DTS || true
 echo "...compiling DTS to DTB"
 dtc -f -I dts -O dtb -o $DTB $DTS
 popd
