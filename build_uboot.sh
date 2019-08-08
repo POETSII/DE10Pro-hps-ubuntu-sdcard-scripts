@@ -32,13 +32,39 @@
 # SUCH DAMAGE.
 #
 
-# build a uboot and preloader image, using the hps_isw_handoff tree output by the FPGA build
+COMPILER_FILE="gcc-linaro-7.2.1-2017.11-x86_64_aarch64-linux-gnu"
+COMPILER_URL="https://releases.linaro.org/components/toolchain/binaries/7.2-2017.11/aarch64-linux-gnu/${COMPILER_FILE}.tar.xz" 
+CWD=$(pwd)
+CPUS=8
 
-# parameter = location of the hps_isw_handoff tree, contains emif.xml and hps.xml
-FPGA_HANDOFF_DIR="$1"
-# BSP directory to generate
-BSP_DIR="bsp"
+BRANCH="socfpga_v2017.09"
 
-bsp-create-settings --type uboot \
-	--preloader-settings-dir $FPGA_HANDOFF_DIR --bsp-dir $BSP_DIR --settings $BSP_DIR/settings.bsp
-make -C $BSP_DIR
+echo "Fetching compiler..."
+wget -c $COMPILER_URL
+echo "Untarring compiler..."
+tar xJf $COMPILER_FILE.tar.xz
+export CROSS_COMPILE=$CWD/$COMPILER_FILE/bin/aarch64-linux-gnu-
+
+if [ -d u-boot-socfpga ] ; then
+	echo "Cleaning and updating to upstream Linux source..."
+	cd u-boot-socfpga
+	git fetch origin
+	git reset --hard origin/master
+else
+	echo "Fetching Linux source..."
+	git clone https://github.com/altera-opensource/u-boot-socfpga
+	cd u-boot-socfpga
+	git checkout $BRANCH
+fi
+
+
+export ARCH=arm64
+echo "Configuring U-Boot source..."
+make mrproper
+# may need to install ncurses-devel or ncurses-dev package for this step
+make socfpga_stratix10_defconfig
+# change any options here
+#make menuconfig
+make -j$CPUS
+
+${CROSS_COMPILE}objcopy -I binary -O ihex --change-addresses 0xffe00000  spl/u-boot-spl-nodtb.bin spl/u-boot-spl-nodtb.ihex

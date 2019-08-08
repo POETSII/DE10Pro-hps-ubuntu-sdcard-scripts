@@ -32,8 +32,8 @@
 # SUCH DAMAGE.
 #
 
-UBUNTU_URL="http://cdimage.ubuntu.com/releases/16.04/release"
-UBUNTU_FILE="ubuntu-16.04.4-preinstalled-server-armhf+raspi2"
+UBUNTU_URL="http://cdimage.ubuntu.com/releases/18.04/release"
+UBUNTU_FILE="ubuntu-18.04.2-preinstalled-server-arm64+raspi3"
 
 # handy functions for driving losetup, based on
 # https://stackoverflow.com/a/39675265

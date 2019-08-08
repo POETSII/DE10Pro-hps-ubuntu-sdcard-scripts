@@ -72,7 +72,7 @@ function kernel() {
 }
 
 function uboot() {
-	$SCRIPT_PATH/make_uboot.sh $FPGA_DIR/$FPGA_HANDOFF_DIR
+	$SCRIPT_PATH/build_uboot.sh $FPGA_DIR/$FPGA_HANDOFF_DIR
 	cp -a bsp/uboot_w_dtb-mkpimage.bin .
 }
 

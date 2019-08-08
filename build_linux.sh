@@ -32,9 +32,8 @@
 # SUCH DAMAGE.
 #
 
-
-COMPILER_FILE="gcc-linaro-7.2.1-2017.11-x86_64_arm-linux-gnueabihf"
-COMPILER_URL="https://releases.linaro.org/components/toolchain/binaries/7.2-2017.11/arm-linux-gnueabihf/${COMPILER_FILE}.tar.xz"
+COMPILER_FILE="gcc-linaro-7.2.1-2017.11-x86_64_aarch64-linux-gnu"
+COMPILER_URL="https://releases.linaro.org/components/toolchain/binaries/7.2-2017.11/aarch64-linux-gnu/${COMPILER_FILE}.tar.xz" 
 CWD=$(pwd)
 CPUS=8
 
@@ -44,7 +43,7 @@ echo "Fetching compiler..."
 wget -c $COMPILER_URL
 echo "Untarring compiler..."
 tar xJf $COMPILER_FILE.tar.xz
-export CROSS_COMPILE=$CWD/$COMPILER_FILE/bin/arm-linux-gnueabihf-
+export CROSS_COMPILE=$CWD/$COMPILER_FILE/bin/aarch64-linux-gnu-
 
 if [ -d linux-socfpga ] ; then
 	echo "Cleaning and updating to upstream Linux source..."
@@ -59,11 +58,11 @@ else
 fi
 
 
-export ARCH=arm
+export ARCH=arm64
 echo "Configuring Linux source..."
 # may need to install ncurses-devel or ncurses-dev package for this step
-make socfpga_defconfig
+make defconfig
 # change any options here
 #make menuconfig
-make zImage -j$CPUS
-cp -a arch/arm/boot/zImage ../
+make all -j$CPUS
+cp -a arch/arm64/boot/Image ../
