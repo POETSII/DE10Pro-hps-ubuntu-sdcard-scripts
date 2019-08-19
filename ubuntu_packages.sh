@@ -40,16 +40,16 @@ PACKAGES="$@"
 sudo apt-get install -y qemu-user-static qemu-user-binfmt
 
 # put it inside the chroot
-sudo cp /usr/bin/qemu-arm-static $INSTALL/usr/bin/qemu-arm-static
+sudo cp /usr/bin/qemu-aarch64-static $INSTALL/usr/bin/qemu-aarch64-static
 
 # ensure DNS is functional
 sudo mkdir -p $INSTALL/run/resolvconf
 echo "nameserver 8.8.8.8" | sudo tee $INSTALL/run/resolvconf/resolv.conf
 
-sudo chroot $INSTALL /usr/bin/qemu-arm-static /usr/bin/apt-get -y update
+sudo chroot $INSTALL /usr/bin/qemu-aarch64-static /usr/bin/apt-get -y update
 # apt-get upgrade doesn't work so well via qemu emulation
 #sudo chroot $INSTALL /usr/bin/qemu-arm-static /usr/bin/apt-get -y upgrade
-sudo chroot $INSTALL /usr/bin/qemu-arm-static /usr/bin/apt-get -y install $PACKAGES
+sudo chroot $INSTALL /usr/bin/qemu-aarch64-static /usr/bin/apt-get -y install $PACKAGES
 
-sudo rm $INSTALL/usr/bin/qemu-arm-static
+sudo rm $INSTALL/usr/bin/qemu-aarch64-static
 sudo rm $INSTALL/run/resolvconf/resolv.conf

@@ -35,7 +35,6 @@
 COMPILER_FILE="gcc-linaro-7.2.1-2017.11-x86_64_aarch64-linux-gnu"
 COMPILER_URL="https://releases.linaro.org/components/toolchain/binaries/7.2-2017.11/aarch64-linux-gnu/${COMPILER_FILE}.tar.xz" 
 CWD=$(pwd)
-CPUS=8
 
 BRANCH="socfpga_v2017.09"
 
@@ -65,6 +64,7 @@ make mrproper
 make socfpga_stratix10_defconfig
 # change any options here
 #make menuconfig
-make -j$CPUS
+make
+make
 
-${CROSS_COMPILE}objcopy -I binary -O ihex --change-addresses 0xffe00000  spl/u-boot-spl-nodtb.bin spl/u-boot-spl-nodtb.ihex
+${CROSS_COMPILE}objcopy -I binary -O ihex --change-addresses 0xffe00000  spl/u-boot-spl-dtb.bin spl/u-boot-spl-dtb.ihex

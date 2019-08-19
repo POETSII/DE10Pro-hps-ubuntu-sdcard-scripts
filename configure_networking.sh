@@ -40,5 +40,6 @@ sudo sed -i "s/timeout 300;/timeout 10;/g" $DHCPCFG
 
 # enable IPv6 and Google public DNS
 V6CFG=$INSTALL/etc/network/interfaces.d/60-ipv6dns.cfg
-echo "iface eth0 inet6 auto" | sudo tee -a $V6CFG
-echo "        dns-nameservers 2001:4860:4860::8888 2001:4860:4860::8844" | sudo tee -a $V6CFG
+echo "Networking not configured on ubuntu 18.04"
+#echo "iface eth0 inet6 auto" | sudo tee -a $V6CFG
+#echo "        dns-nameservers 2001:4860:4860::8888 2001:4860:4860::8844" | sudo tee -a $V6CFG

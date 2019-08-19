@@ -39,6 +39,8 @@ QSYS=$3
 PAYLOAD=$4
 FPGA_HANDOFF_DIR=hps_isw_handoff
 FPGA_BITFILE_RBF=$FPGA_DIR/output_files/$FPGA_PROJECT.rbf
+UBOOT_DIR=u-boot-socfpga
+UBOOT_BIN=spl/u-boot-spl-dtb.ihex
 SD_IMAGE=sdimage.img
 ROOT_SIZE_MIB=3270
 SD_SIZE_MIB=3810
@@ -62,7 +64,7 @@ function ubuntu() {
 	$SCRIPT_PATH/ubuntu_packages.sh mnt/2/ $PACKAGES
 	if [ -n "$PAYLOAD" ] ; then
 		echo "Copying extra files into tree"
-		cp -av $PAYLOAD/* mnt/2/
+		sudo cp -av $PAYLOAD/* mnt/2/
 	fi
 }
 
@@ -73,18 +75,18 @@ function kernel() {
 
 function uboot() {
 	$SCRIPT_PATH/build_uboot.sh $FPGA_DIR/$FPGA_HANDOFF_DIR
-	cp -a bsp/uboot_w_dtb-mkpimage.bin .
+	cp $UBOOT_DIR/u-boot-dtb.img .
 }
 
 function devicetree() {
-	$SCRIPT_PATH/make_device_tree.sh $FPGA_DIR $QSYS.sopcinfo
-
-	cp -a $FPGA_DIR/$DTB $DTB	
+#	$SCRIPT_PATH/make_device_tree.sh $FPGA_DIR $QSYS.sopcinfo
+#	cp -a $FPGA_DIR/$DTB $DTB	
+	cp $UBOOT_DIR/arch/arm/dts/socfpga_stratix10_socdk.dtb .
 }
 
 function bitfile() {
-#	$SCRIPT_PATH/make_bitfile.sh $FPGA_DIR $FPGA_PROJECT
-	cp -a $FPGA_BITFILE_RBF socfpga.rbf
+	$SCRIPT_PATH/make_bitfile.sh $FPGA_DIR $FPGA_PROJECT $UBOOT_DIR/$UBOOT_BIN
+#	cp -a $FPGA_BITFILE_RBF*.rbf socfpga.core.rbf
 }
 
 function sdimage() {
@@ -92,12 +94,10 @@ function sdimage() {
 	echo "Building SD card image"
 	sudo rm -f $SD_IMAGE
 	sudo $SCRIPT_PATH/make_sdimage.py -f	\
-		-P uboot_w_dtb-mkpimage.bin,num=3,format=raw,size=10M,type=A2 \
 		-P mnt/2/*,num=2,format=ext3,size=${ROOT_SIZE_MIB}M \
-		-P zImage,socfpga.rbf,socfpga_arria10_socdk_sdmmc.dtb,num=1,format=vfat,size=500M \
+		-P Image,socfpga_stratix10_socdk.dtb,u-boot-dtb.img,num=1,format=vfat,size=500M \
 		-s ${SD_SIZE_MIB}M \
 		-n $SD_IMAGE
-
 }
 
 

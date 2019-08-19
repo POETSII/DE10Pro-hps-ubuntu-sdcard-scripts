@@ -34,6 +34,10 @@
 
 TREE=$1
 PROJECT=$2
+# u-boot ihex file
+UBOOT=$3
+OUTPUT=$PROJECT-hps
 
 # assume we've already compiled Quartus project
-quartus_cpf -c $TREE/output_files/$PROJECT.sof $TREE/output_files/$PROJECT.rbf
+quartus_cpf --bootloader=$UBOOT $TREE/output_files/$PROJECT.sof $TREE/output_files/$OUTPUT.sof
+quartus_cpf -c --hps -o bitstream_compression=on $TREE/output_files/$OUTPUT.sof $TREE/output_files/$OUTPUT.rbf
