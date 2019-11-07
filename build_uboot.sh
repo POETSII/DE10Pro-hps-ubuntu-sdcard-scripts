@@ -64,7 +64,7 @@ make mrproper
 make socfpga_stratix10_defconfig
 # change any options here
 #make menuconfig
-make
-make
+make CONFIG_OF_EMBED=y
+#make
 
 ${CROSS_COMPILE}objcopy -I binary -O ihex --change-addresses 0xffe00000  spl/u-boot-spl-dtb.bin spl/u-boot-spl-dtb.ihex
