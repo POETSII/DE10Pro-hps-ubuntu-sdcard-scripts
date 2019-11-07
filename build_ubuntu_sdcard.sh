@@ -106,10 +106,10 @@ function tidy() {
 }
 
 
-ubuntu
-kernel
-uboot
-devicetree
-bitfile
-sdimage
+ubuntu && \
+kernel && \
+uboot && \
+devicetree && \
+bitfile && \
+sdimage && \
 tidy
