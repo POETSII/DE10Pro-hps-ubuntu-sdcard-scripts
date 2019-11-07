@@ -45,16 +45,16 @@ tar xJf $COMPILER_FILE.tar.xz
 export CROSS_COMPILE=$CWD/$COMPILER_FILE/bin/aarch64-linux-gnu-
 
 if [ -d u-boot-socfpga ] ; then
-	echo "Cleaning and updating to upstream Linux source..."
+	echo "Cleaning and updating to upstream U-boot source..."
 	cd u-boot-socfpga
 	git fetch origin
-	git reset --hard origin/master
+	git reset --hard origin/$BRANCH
 else
-	echo "Fetching Linux source..."
+	echo "Fetching U-boot source..."
 	git clone https://github.com/altera-opensource/u-boot-socfpga
 	cd u-boot-socfpga
-	git checkout $BRANCH
 fi
+git checkout $BRANCH
 
 
 export ARCH=arm64
@@ -64,7 +64,7 @@ make mrproper
 make socfpga_stratix10_defconfig
 # change any options here
 #make menuconfig
-make CONFIG_OF_EMBED=y
+make
 #make
 
 ${CROSS_COMPILE}objcopy -I binary -O ihex --change-addresses 0xffe00000  spl/u-boot-spl-dtb.bin spl/u-boot-spl-dtb.ihex
