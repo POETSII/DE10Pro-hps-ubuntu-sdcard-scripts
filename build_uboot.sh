@@ -36,8 +36,12 @@ COMPILER_FILE="gcc-linaro-7.2.1-2017.11-x86_64_aarch64-linux-gnu"
 COMPILER_URL="https://releases.linaro.org/components/toolchain/binaries/7.2-2017.11/aarch64-linux-gnu/${COMPILER_FILE}.tar.xz" 
 CWD=$(pwd)
 
-BRANCH="socfpga_v2017.09"
-COMMIT="a2cf064e6c87683173aebda9399f6bd9a5ea3a8c"
+#GIT="https://github.com/altera-opensource/u-boot-socfpga"
+GIT="https://github.com/terasic/u-boot-socfpga"
+#BRANCH="socfpga_v2017.09"
+BRANCH="de10_pro_revC"
+#COMMIT="a2cf064e6c87683173aebda9399f6bd9a5ea3a8c"
+
 
 echo "Fetching compiler..."
 wget -c $COMPILER_URL
@@ -52,11 +56,11 @@ if [ -d u-boot-socfpga ] ; then
 	git reset --hard origin/$BRANCH
 else
 	echo "Fetching U-boot source..."
-	git clone https://github.com/altera-opensource/u-boot-socfpga
+	git clone $GIT
 	cd u-boot-socfpga
 fi
 git checkout $BRANCH
-git checkout $COMMIT
+#git checkout $COMMIT
 
 export ARCH=arm64
 echo "Configuring U-Boot source..."
