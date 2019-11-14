@@ -52,7 +52,7 @@ shift
 # parameters 5 and later
 PACKAGES="$@"
 
-DTB=socfpga_arria10_socdk_sdmmc.dtb
+DTB=socfpga_stratix10_de10_pro.dtb
 
 SCRIPT_NAME=$(readlink -f "$0")
 SCRIPT_PATH=$(dirname "$SCRIPT_NAME")
@@ -81,7 +81,7 @@ function uboot() {
 function devicetree() {
 #	$SCRIPT_PATH/make_device_tree.sh $FPGA_DIR $QSYS.sopcinfo
 #	cp -a $FPGA_DIR/$DTB $DTB	
-	cp $UBOOT_DIR/arch/arm/dts/socfpga_stratix10_socdk.dtb .
+	cp $UBOOT_DIR/arch/arm/dts/$DTB .
 }
 
 function bitfile() {
@@ -95,7 +95,7 @@ function sdimage() {
 	sudo rm -f $SD_IMAGE
 	sudo $SCRIPT_PATH/make_sdimage.py -f	\
 		-P mnt/2/*,num=2,format=ext3,size=${ROOT_SIZE_MIB}M \
-		-P Image,socfpga_stratix10_socdk.dtb,u-boot-dtb.img,num=1,format=vfat,size=500M \
+		-P Image,${DTB},u-boot-dtb.img,num=1,format=vfat,size=500M \
 		-s ${SD_SIZE_MIB}M \
 		-n $SD_IMAGE
 }

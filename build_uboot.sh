@@ -66,7 +66,7 @@ export ARCH=arm64
 echo "Configuring U-Boot source..."
 make mrproper
 # may need to install ncurses-devel or ncurses-dev package for this step
-make socfpga_stratix10_defconfig
+make socfpga_de10_pro_defconfig
 # change any options here
 #make menuconfig
 make
