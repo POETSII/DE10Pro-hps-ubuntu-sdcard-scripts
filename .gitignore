@@ -1,0 +1,9 @@
+Image
+gcc-linaro-*
+linux-socfpga
+mnt
+sdimage.img
+socfpga_*.dtb
+u-boot-dtb.img
+u-boot-socfpga
+ubuntu-18.04*.img

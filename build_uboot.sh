@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #-
 # SPDX-License-Identifier: BSD-2-Clause
 #
@@ -42,11 +42,12 @@ GIT="https://github.com/terasic/u-boot-socfpga"
 BRANCH="de10_pro_revC"
 #COMMIT="a2cf064e6c87683173aebda9399f6bd9a5ea3a8c"
 
-
 echo "Fetching compiler..."
 wget -c $COMPILER_URL
-echo "Untarring compiler..."
-tar xJf $COMPILER_FILE.tar.xz
+if [ -z $COMPILER_FILE] ; then
+	echo "Untarring compiler..."
+	tar xJf $COMPILER_FILE.tar.xz
+fi
 export CROSS_COMPILE=$CWD/$COMPILER_FILE/bin/aarch64-linux-gnu-
 
 if [ -d u-boot-socfpga ] ; then
@@ -68,6 +69,10 @@ make mrproper
 # may need to install ncurses-devel or ncurses-dev package for this step
 make socfpga_de10_pro_defconfig
 # change any options here
+
+echo "Edit device tree now"
+read -n1 -rsp $'Press any key to continue or Ctrl+C to exit...\n'
+
 #make menuconfig
 make
 #make

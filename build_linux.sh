@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #-
 # SPDX-License-Identifier: BSD-2-Clause
 #
@@ -37,7 +37,7 @@ COMPILER_URL="https://releases.linaro.org/components/toolchain/binaries/7.2-2017
 CWD=$(pwd)
 CPUS=8
 
-KERNEL_BRANCH="socfpga-5.1"
+KERNEL_BRANCH="socfpga-5.5"
 
 echo "Fetching compiler..."
 wget -c $COMPILER_URL
@@ -61,8 +61,10 @@ fi
 export ARCH=arm64
 echo "Configuring Linux source..."
 # may need to install ncurses-devel or ncurses-dev package for this step
+#  may also need to install flex, bison
 make defconfig
 # change any options here
-#make menuconfig
+make menuconfig
+
 make all -j$CPUS
 cp -a arch/arm64/boot/Image ../

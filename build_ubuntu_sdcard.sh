@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash
 #-
 # SPDX-License-Identifier: BSD-2-Clause
 #
@@ -32,7 +32,6 @@
 # SUCH DAMAGE.
 #
 
-
 FPGA_DIR=$1
 FPGA_PROJECT=$2
 QSYS=$3
@@ -44,7 +43,6 @@ UBOOT_BIN=spl/u-boot-spl-dtb.ihex
 SD_IMAGE=sdimage.img
 ROOT_SIZE_MIB=3270
 SD_SIZE_MIB=3810
-echo $SCRIPT_PATH
 shift
 shift
 shift
@@ -58,9 +56,13 @@ SCRIPT_NAME=$(readlink -f "$0")
 SCRIPT_PATH=$(dirname "$SCRIPT_NAME")
 
 function ubuntu() {
+	echo "fetch_ubuntu"
 	$SCRIPT_PATH/fetch_ubuntu.sh
+	echo "configure_system"
 	$SCRIPT_PATH/configure_system.sh mnt/2/
+	echo "configure_networking"
 	$SCRIPT_PATH/configure_networking.sh mnt/2/
+	echo "ubuntu_packages"
 	$SCRIPT_PATH/ubuntu_packages.sh mnt/2/ $PACKAGES
 	if [ -n "$PAYLOAD" ] ; then
 		echo "Copying extra files into tree"
@@ -70,10 +72,12 @@ function ubuntu() {
 
 
 function kernel() {
+	echo "build_linux"
 	$SCRIPT_PATH/build_linux.sh
 }
 
 function uboot() {
+	echo "make_uboot"
 	$SCRIPT_PATH/build_uboot.sh $FPGA_DIR/$FPGA_HANDOFF_DIR
 	cp $UBOOT_DIR/u-boot-dtb.img .
 }
@@ -81,6 +85,7 @@ function uboot() {
 function devicetree() {
 #	$SCRIPT_PATH/make_device_tree.sh $FPGA_DIR $QSYS.sopcinfo
 #	cp -a $FPGA_DIR/$DTB $DTB	
+	echo "make_device_tree"
 	cp $UBOOT_DIR/arch/arm/dts/$DTB .
 }
 
