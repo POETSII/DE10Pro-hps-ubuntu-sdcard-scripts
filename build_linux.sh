@@ -37,7 +37,7 @@ COMPILER_URL="https://releases.linaro.org/components/toolchain/binaries/7.2-2017
 CWD=$(pwd)
 CPUS=8
 
-KERNEL_BRANCH="socfpga-5.5"
+KERNEL_BRANCH="de10_pro_revC"
 
 echo "Fetching compiler..."
 wget -c $COMPILER_URL
@@ -52,7 +52,7 @@ if [ -d linux-socfpga ] ; then
 	git reset --hard origin/master
 else
 	echo "Fetching Linux source..."
-	git clone https://github.com/altera-opensource/linux-socfpga
+	git clone https://github.com/terasic/linux-socfpga
 	cd linux-socfpga
 	git checkout $KERNEL_BRANCH
 fi
@@ -65,6 +65,9 @@ echo "Configuring Linux source..."
 make defconfig
 # change any options here
 make menuconfig
+
+echo "Edit device tree now"
+read -n1 -rsp $'Press any key to continue or Ctrl+C to exit...\n'
 
 make all -j$CPUS
 cp -a arch/arm64/boot/Image ../
