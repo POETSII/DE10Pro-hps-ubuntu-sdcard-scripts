@@ -1,0 +1,11 @@
+fatload mmc 0:1 1000 socfpga.core.rbf
+
+fpga load 0 1000 ${filesize}
+
+env set fdtimage socfpga_stratix10_de10_pro2.dtb
+
+run mmcload
+
+setenv bootargs earlycon console=ttyS0,115200n8 root=${mmcroot} rw rootwait
+
+booti ${loadaddr} - ${fdt_addr}
