@@ -37,7 +37,7 @@ shift
 PACKAGES="$@"
 
 # make sure we have a qemu binary
-#sudo apt-get install -y qemu-user-static qemu-user-binfmt
+sudo apt-get install -y qemu-user-static
 
 # put it inside the chroot
 sudo cp /usr/bin/qemu-aarch64-static $INSTALL/usr/bin/qemu-aarch64-static
