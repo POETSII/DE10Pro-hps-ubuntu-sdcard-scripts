@@ -82,6 +82,7 @@ function uboot() {
 	echo "make_uboot"
 	$SCRIPT_PATH/build_uboot.sh $FPGA_DIR/$FPGA_HANDOFF_DIR
 	cp $UBOOT_DIR/u-boot-dtb.img .
+	cp $SCRIPT_PATH/u-boot.txt .
 	$UBOOT_DIR/tools/mkimage -A arm -T script -O linux -d u-boot.txt u-boot.scr
 }
 
