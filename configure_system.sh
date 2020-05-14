@@ -37,8 +37,8 @@ INSTALL=$1
 # set fstab to reflect actual hardware
 # (since image builder script can't set disc labels itself)
 FSTAB=$INSTALL/etc/fstab
-sudo sed -i "s%LABEL=cloudimg-rootfs%/dev/mmcblk0p2%g" $FSTAB
-sudo sed -i "s%LABEL=system-boot%/dev/mmcblk0p1%g" $FSTAB
+#sudo sed -i "s%LABEL=cloudimg-rootfs%/dev/mmcblk0p2%g" $FSTAB
+#sudo sed -i "s%LABEL=system-boot%/dev/mmcblk0p1%g" $FSTAB
 sudo sed -i "s%/firmware%%g" $FSTAB
 
 # add a helpful message so user knows how to login on the terminal
@@ -47,6 +47,6 @@ echo "First login username 'ubuntu', password 'ubuntu', sudo available" | sudo t
 echo "" | sudo tee -a $ISSUE
 
 # change the hostname to something more descriptive
-echo "arria10" | sudo tee $INSTALL/etc/hostname
+echo "fpga" | sudo tee $INSTALL/etc/hostname
 # prevent sudo from complaining
-echo "127.0.1.1    arria10" | sudo tee -a $INSTALL/etc/hosts
+echo "127.0.1.1    fpga" | sudo tee -a $INSTALL/etc/hosts
