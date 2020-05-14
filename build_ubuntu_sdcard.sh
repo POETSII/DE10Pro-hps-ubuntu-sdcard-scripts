@@ -58,18 +58,24 @@ SCRIPT_NAME=$(readlink -f "$0")
 SCRIPT_PATH=$(dirname "$SCRIPT_NAME")
 
 function ubuntu() {
+	BOOT=mnt/1
+	ROOT=mnt/2
 	echo "fetch_ubuntu"
 	$SCRIPT_PATH/fetch_ubuntu.sh
 	echo "configure_system"
-	$SCRIPT_PATH/configure_system.sh mnt/2/
+	$SCRIPT_PATH/configure_system.sh $ROOT/
 	echo "configure_networking"
-	$SCRIPT_PATH/configure_networking.sh mnt/2/
+	$SCRIPT_PATH/configure_networking.sh $ROOT/
 	echo "ubuntu_packages"
-	$SCRIPT_PATH/ubuntu_packages.sh mnt/2/ $PACKAGES
+	$SCRIPT_PATH/ubuntu_packages.sh $ROOT/ $PACKAGES
 	if [ -n "$PAYLOAD" ] ; then
 		echo "Copying extra files into tree"
-		sudo cp -av $PAYLOAD/* mnt/2/
+		sudo cp -av $PAYLOAD/* $ROOT/
 	fi
+	echo "Copying cloud_init files"
+	cp -a $BOOT/meta-data .
+	cp -a $BOOT/user-data .
+	cp -a $BOOT/network-config .
 }
 
 
@@ -100,11 +106,12 @@ function bitfile() {
 }
 
 function sdimage() {
+	CLOUD_INIT="meta-data,user-data,network-config"
 	echo "Building SD card image"
 	sudo rm -f $SD_IMAGE
 	sudo $SCRIPT_PATH/make_sdimage.py -f	\
-		-P mnt/2/*,num=2,format=ext3,size=${ROOT_SIZE_MIB}M \
-		-P Image,${DTB},${DTB2},u-boot-dtb.img,u-boot.scr,socfpga.core.rbf,num=1,format=vfat,size=500M \
+		-P mnt/2/*,num=2,format=ext3,size=${ROOT_SIZE_MIB}M,label=cloudimg-rootfs \
+		-P Image,${DTB},${DTB2},u-boot-dtb.img,u-boot.scr,socfpga.core.rbf,$CLOUD_INIT,num=1,format=vfat,size=500M,label=system-boot \
 		-s ${SD_SIZE_MIB}M \
 		-n $SD_IMAGE
 }

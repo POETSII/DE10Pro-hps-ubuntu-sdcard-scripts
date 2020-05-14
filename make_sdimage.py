@@ -156,6 +156,8 @@ def parse_single_part_args(part):
                     sys.exit(-1)
             elif key == 'type':
                 part_entries[key] = value
+            elif key == 'label':
+                part_entries[key] = value
             else:
                 print("error:", key,": unknown option")
                 sys.exit(-1)
@@ -492,6 +494,33 @@ def format_partition(loopback, fs_format):
 
     return
 
+
+#==============================================================================
+#
+# labels a filesystem
+def label_partition(device, fs_label, fs_format):
+
+    if re.search ("^ext[2-4]$", fs_format):
+        cmdline = ['e2label', device, fs_label]
+    elif re.search("^fat|vfat|fat32", fs_format):
+        cmdline = ['fatlabel', device, fs_label]
+    elif re.search("^xfs$", fs_format):
+        print("XFS labelling not supported at present")
+        clean_up()
+        sys.exit(2)
+
+    print(cmdline)
+    p = subprocess.Popen(cmdline,
+                         stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    p.communicate()
+    if p.returncode != 0:
+        print("error: label failed")
+        clean_up()
+        sys.exit(-1)
+
+    return
+
+
 def get_mountfs_from_format(pformat):
     format = pformat
 
@@ -499,6 +528,7 @@ def get_mountfs_from_format(pformat):
         format = "vfat"
 
     return format
+
 #==============================================================================
 # mount a file system
 #! returns the mnt point
@@ -638,6 +668,8 @@ def do_partition(partition, image_name):
 
     loopback = create_loopback(image_name, partition['size'], offset_bytes)
     format_partition(loopback, partition['format'])
+    if 'label' in partition.keys():
+        label_partition(loopback, partition['label'], partition['format'])
     copy_files_to_partition(loopback, partition)
     time.sleep(3)
     if not delete_loopback(loopback):
@@ -691,7 +723,7 @@ Usage: PROG [-h] -P <partition info> [-P ...]
 parser.add_argument('-P', dest='part_args', action='append',
                     help='''specifies a partition. May be used multiple times.
                             file[,file,...],num=<part_num>,format=<vfat|fat32|ext[2-4]|xfs|raw>,
-                            size=<num[K|M|G]>[,type=ID]''')
+                            size=<num[K|M|G]>[,type=ID][,label=<disklabel>]''')
 parser.add_argument('-s', dest='size', action='store',
                     default='8G', help='specifies the size of the image. Units K|M|G can be used.')
 parser.add_argument('-n', dest='image_name', action='store',
