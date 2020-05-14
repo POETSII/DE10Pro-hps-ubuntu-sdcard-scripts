@@ -49,7 +49,7 @@ if [ -d linux-socfpga ] ; then
 	echo "Cleaning and updating to upstream Linux source..."
 	cd linux-socfpga
 	git fetch origin
-	git reset --hard origin/master
+	git reset --hard origin/$KERNEL_BRANCH
 else
 	echo "Fetching Linux source..."
 	git clone https://github.com/terasic/linux-socfpga
