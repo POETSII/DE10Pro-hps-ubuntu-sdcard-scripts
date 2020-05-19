@@ -49,6 +49,7 @@ if [ -d linux-socfpga ] ; then
 	echo "Cleaning and updating to upstream Linux source..."
 	cd linux-socfpga
 	git fetch origin
+	# may not want this if there are local modifications in-tree
 	git reset --hard origin/$KERNEL_BRANCH
 else
 	echo "Fetching Linux source..."
@@ -60,9 +61,15 @@ fi
 
 export ARCH=arm64
 echo "Configuring Linux source..."
+if [ -f .config ] ; then
+	echo "Using existing kernel configuration .config"
+else
+	echo "Creating new configuration from supplied de10_pro.config"
+	cp -a de10_pro.config .config
+fi
 # may need to install ncurses-devel or ncurses-dev package for this step
 #  may also need to install flex, bison
-make defconfig
+#make defconfig
 # change any options here
 make menuconfig
 
