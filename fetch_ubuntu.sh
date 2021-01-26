@@ -33,7 +33,7 @@
 #
 
 UBUNTU_URL="http://cdimage.ubuntu.com/releases/18.04/release"
-UBUNTU_FILE="ubuntu-18.04.4-preinstalled-server-arm64+raspi3"
+UBUNTU_FILE="ubuntu-18.04.5-preinstalled-server-arm64+raspi3"
 
 # handy functions for driving losetup, based on
 # https://stackoverflow.com/a/39675265
@@ -64,7 +64,7 @@ losd() {
 
 
 wget -c $UBUNTU_URL/$UBUNTU_FILE.img.xz
-unxz $UBUNTU_FILE.img.xz
+unxz -k $UBUNTU_FILE.img.xz
 los $UBUNTU_FILE.img
 echo $loopdev
 #losd $loopdev

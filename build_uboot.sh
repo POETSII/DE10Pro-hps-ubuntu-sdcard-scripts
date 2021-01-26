@@ -44,7 +44,7 @@ BRANCH="de10_pro_revC"
 
 echo "Fetching compiler..."
 wget -c $COMPILER_URL
-if [ -z $COMPILER_FILE] ; then
+if [ -z $COMPILER_FILE ] ; then
 	echo "Untarring compiler..."
 	tar xJf $COMPILER_FILE.tar.xz
 fi
