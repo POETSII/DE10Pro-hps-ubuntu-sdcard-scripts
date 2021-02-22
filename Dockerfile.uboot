@@ -1,0 +1,10 @@
+FROM ubuntu:20.04
+
+WORKDIR /workspace
+RUN \
+	apt-get -y update && \
+	apt-get -y install build-essential git libncurses-dev libssl-dev \
+		wget device-tree-compiler && \
+	apt-get -y clean
+
+CMD ["/bin/bash"]
