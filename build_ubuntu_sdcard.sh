@@ -52,7 +52,6 @@ shift
 PACKAGES="$@"
 
 DTB=socfpga_stratix10_de10_pro.dtb
-DTB2=socfpga_stratix10_de10_pro2.dtb
 
 SCRIPT_NAME=$(readlink -f "$0")
 SCRIPT_PATH=$(dirname "$SCRIPT_NAME")
@@ -87,7 +86,7 @@ function kernel() {
 function uboot() {
 	echo "make_uboot"
 	$SCRIPT_PATH/build_uboot.sh $FPGA_DIR/$FPGA_HANDOFF_DIR
-	cp $UBOOT_DIR/u-boot-dtb.img .
+	cp $UBOOT_DIR/u-boot.img .
 	cp $SCRIPT_PATH/u-boot.txt .
 	$UBOOT_DIR/tools/mkimage -A arm -T script -O linux -d u-boot.txt u-boot.scr
 }
@@ -96,8 +95,7 @@ function devicetree() {
 #	$SCRIPT_PATH/make_device_tree.sh $FPGA_DIR $QSYS.sopcinfo
 #	cp -a $FPGA_DIR/$DTB $DTB	
 	echo "make_device_tree"
-	cp $UBOOT_DIR/arch/arm/dts/$DTB .
-	cp $LINUX_DIR/arch/arm64/boot/dts/altera/$DTB ./$DTB2
+	cp $LINUX_DIR/arch/arm64/boot/dts/altera/$DTB .
 }
 
 function bitfile() {
@@ -111,7 +109,7 @@ function sdimage() {
 	sudo rm -f $SD_IMAGE
 	sudo $SCRIPT_PATH/make_sdimage.py -f	\
 		-P mnt/2/*,num=2,format=ext3,size=${ROOT_SIZE_MIB}M,label=cloudimg-rootfs \
-		-P Image,${DTB},${DTB2},u-boot-dtb.img,u-boot.scr,socfpga.core.rbf,$CLOUD_INIT,num=1,format=vfat,size=500M,label=system-boot \
+		-P Image,${DTB},u-boot.img,u-boot.scr,socfpga.core.rbf,$CLOUD_INIT,num=1,format=vfat,size=500M,label=system-boot \
 		-s ${SD_SIZE_MIB}M \
 		-n $SD_IMAGE
 }

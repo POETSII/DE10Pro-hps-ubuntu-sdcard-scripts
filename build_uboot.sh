@@ -39,7 +39,7 @@ CWD=$(pwd)
 #GIT="https://github.com/altera-opensource/u-boot-socfpga"
 GIT="https://github.com/terasic/u-boot-socfpga"
 #BRANCH="socfpga_v2017.09"
-BRANCH="de10_pro_revC"
+BRANCH="de10_pro_revD"
 #COMMIT="a2cf064e6c87683173aebda9399f6bd9a5ea3a8c"
 
 echo "Fetching compiler..."
@@ -67,7 +67,8 @@ export ARCH=arm64
 echo "Configuring U-Boot source..."
 make mrproper
 # may need to install ncurses-devel or ncurses-dev package for this step
-make socfpga_de10_pro_defconfig
+#make socfpga_de10_pro_defconfig
+cp de10_pro.config .config
 # change any options here
 
 echo "Edit device tree now"
