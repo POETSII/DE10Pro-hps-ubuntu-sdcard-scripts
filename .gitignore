@@ -2,8 +2,12 @@ Image
 gcc-linaro-*
 linux-socfpga
 mnt
-sdimage.img
+sdimage.img*
 socfpga_*.dtb
-u-boot-dtb.img
+u-boot.img
 u-boot-socfpga
-ubuntu-18.04*.img
+ubuntu-18.04*
+meta-data
+network-config
+u-boot.scr
+user-data
