@@ -71,8 +71,8 @@ make mrproper
 cp de10_pro.config .config
 # change any options here
 
-echo "Edit device tree now"
-read -n1 -rsp $'Press any key to continue or Ctrl+C to exit...\n'
+# echo "Edit device tree now"
+# read -n1 -rsp $'Press any key to continue or Ctrl+C to exit...\n'
 
 #make menuconfig
 make

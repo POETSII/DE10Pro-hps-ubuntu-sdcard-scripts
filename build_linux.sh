@@ -71,10 +71,10 @@ fi
 #  may also need to install flex, bison
 #make defconfig
 # change any options here
-make menuconfig
+#make menuconfig
 
-echo "Edit device tree now"
-read -n1 -rsp $'Press any key to continue or Ctrl+C to exit...\n'
+#echo "Edit device tree now"
+#read -n1 -rsp $'Press any key to continue or Ctrl+C to exit...\n'
 
 make all -j$CPUS
 cp -a arch/arm64/boot/Image ../
